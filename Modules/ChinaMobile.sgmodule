@@ -1,25 +1,10 @@
 #!name = 中国移动
 #!desc = 过滤中国移动广告
-#!openUrl = https://apps.apple.com/app/id583700738
-#!tag = 去广告
-#!icon = https://raw.githubusercontent.com/sooyaaabo/Loon/main/Icon/App/ChinaMobile-CMCC.png
-#!date = 2024-10-16 09:30
-
 
 [Rewrite]
-# 启动页
-^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/init\/startInit$ url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ChinaMobile/NoAds.js
-# 首页 - 下拉
-^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/newTopPullSecond\/getNewTopPullList url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ChinaMobile/NoAds.js
-# 首页 - 悬浮广告
-^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/emotionMarket\/getEmotionMarketNew url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ChinaMobile/NoAds.js
-^https?:\/\/h\.app\.coc\.10086\.cn\/biz-orange\/DH\/homeArea\/getTopAreaList url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ChinaMobile/NoAds.js
-# 弹窗
-^https?:\/\/h\.app\.coc\.10086\.cn\/biz-orange\/DH\/popupWindow\/getDetail url reject-200
-# 办理 - 横幅
-^https?:\/\/h\.app\.coc\.10086\.cn\/biz-orange\/DH\/navigation\/getNavigationNewInfo url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ChinaMobile/NoAds.js
-# 我的 - 弹窗 
-^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/friendShake\/getShakeList url script-response-body https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/ChinaMobile/NoAds.js
+^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/init\/startInit - reject
+^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/explorePage\/getAdverList - reject
+^https:\/\/(client\.app\.coc|h\.app\.coc|app)\.10086\.cn\/biz-orange\/DN\/emotionMarket - reject
 
 [MitM]
 hostname = %APPEND% client.app.coc.10086.cn, h.app.coc.10086.cn
