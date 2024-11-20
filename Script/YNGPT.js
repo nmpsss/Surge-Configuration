@@ -3,11 +3,7 @@ const TIMEOUT = 3000;
 
 async function test_chatgpt() {
     let panel = {};
-    let web = "✗";
-    let api = "✗"; 
-    let app = "✗";
-    let region = "--";
-    let warp = "✗";
+    let result = [];
 
     try {
         // 检测网页端
@@ -15,55 +11,44 @@ async function test_chatgpt() {
             url: 'https://chat.openai.com',
             timeout: TIMEOUT
         });
-        web = webResp.status === 200 ? "✓" : "✗";
-
-        // 检测 API
-        let apiResp = await http({
-            url: 'https://api.openai.com/v1/models',
-            timeout: TIMEOUT
-        });
-        api = apiResp.status === 200 ? "✓" : "✗";
+        let web = webResp.status === 200 ? "✓" : "✗";
+        result.push(`网页版: ${web}`);
 
         // 检测 APP 端
         let appResp = await http({
-            url: 'https://ios.chat.openai.com/api/auth/session',
+            url: 'https://ios.chat.openai.com/',
             timeout: TIMEOUT
         });
-        app = appResp.status === 200 ? "✓" : "✗";
+        
+        let appStatus = "✗";
+        if (appResp.status === 403) {
+            try {
+                let body = JSON.parse(appResp.body);
+                if (body.cf_details === "Request is not allowed. Please try again later.") {
+                    appStatus = "✓";
+                }
+            } catch (e) {}
+        }
+        result.push(`移动端: ${appStatus}`);
 
-        // 获取地区代码
+        // 获取地区
         let geoResp = await http({
             url: 'https://chat.openai.com/cdn-cgi/trace'
         });
-        region = geoResp.body?.match(/loc=([A-Z]+)/)?.[1] || '--';
-
-        // 检测 Warp 状态
-        let cloudflareResp = await http({
-            url: 'https://chat.openai.com/cdn-cgi/trace' 
-        });
-        warp = cloudflareResp.body?.includes('warp=on') ? "✓" : "✗";
-
-        // 使用数组存储检测结果
-        let result = [];
-        result.push(`网页版: ${web}`);
-        result.push(`API: ${api}`);
-        result.push(`移动端: ${app}`);
+        let region = geoResp.body?.match(/loc=([A-Z]+)/)?.[1] || '--';
         result.push(`地区: ${region}`);
-        result.push(`Warp: ${warp}`);
 
         panel = {
-            title: 'ChatGPT 解锁检测',
+            title: 'ChatGPT解锁检测',
             content: result.join('\n'),
-            icon: web === "✓" ? 'checkmark.circle' : 'xmark.circle',
-            'icon-color': web === "✓" ? '#1B813E' : '#CB1B45'
+            icon: 'checkmark.circle'
         };
 
     } catch (err) {
         panel = {
-            title: 'ChatGPT 解锁检测',
-            content: ['检测异常', '请刷新重试'].join('\n'),
-            icon: 'xmark.circle',
-            'icon-color': '#CB1B45'
+            title: 'ChatGPT解锁检测',
+            content: '检测异常，请刷新重试',
+            icon: 'xmark.circle'
         };
     }
 
