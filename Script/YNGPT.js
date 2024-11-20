@@ -27,10 +27,7 @@ async function test_chatgpt() {
         // 检测 APP 端
         let appResp = await http({
             url: 'https://ios.chat.openai.com/api/auth/session',
-            timeout: TIMEOUT,
-            headers: {
-                'User-Agent': 'ChatGPT-iOS/1.2023.96'
-            }
+            timeout: TIMEOUT
         });
         app = appResp.status === 200 ? "✓" : "✗";
 
@@ -46,27 +43,25 @@ async function test_chatgpt() {
         });
         warp = cloudflareResp.body?.includes('warp=on') ? "✓" : "✗";
 
-        const lines = [
-            "ChatGPT 解锁检测",
-            `网页版：${web}`,
-            `API：${api}`,
-            `移动端：${app}`,
-            `地区：${region}`,
-            `Warp：${warp}`
-        ];
+        // 使用数组存储检测结果
+        let result = [];
+        result.push(`网页版: ${web}`);
+        result.push(`API: ${api}`);
+        result.push(`移动端: ${app}`);
+        result.push(`地区: ${region}`);
+        result.push(`Warp: ${warp}`);
 
         panel = {
-            title: "ChatGPT 解锁检测",
-            content: lines.join("\n"),
+            title: 'ChatGPT 解锁检测',
+            content: result.join('\n'),
             icon: web === "✓" ? 'checkmark.circle' : 'xmark.circle',
-            'icon-color': web === "✓" ? '#1B813E' : '#CB1B45',
-            backgroundColor: '#1A1B1E'
+            'icon-color': web === "✓" ? '#1B813E' : '#CB1B45'
         };
 
     } catch (err) {
         panel = {
-            title: "ChatGPT 解锁检测",
-            content: "检测异常\n请刷新重试",
+            title: 'ChatGPT 解锁检测',
+            content: ['检测异常', '请刷新重试'].join('\n'),
             icon: 'xmark.circle',
             'icon-color': '#CB1B45'
         };
