@@ -83,8 +83,8 @@ Promise.all([
   let panel = {
     title: 'ChatGPT',
     content: `Web: ${webStatus}\nApp: ${appStatus}\n区域: ${loc}`,
-    icon: 'https://raw.githubusercontent.com/nmpsss/Surge-Configuration/main/Icon/openai-2.svg',    // OpenAI图标
-    'icon-color': '#FFFFFF'   // 白色图标
+    icon: 'play.tv.fill',
+    'icon-color': '#FF2D55',
   };
 
   $done(panel);
@@ -92,8 +92,8 @@ Promise.all([
   $done({
     title: 'ChatGPT',
     content: 'ChatGPT: ❌ 检测失败',
-    icon: 'https://raw.githubusercontent.com/nmpsss/Surge-Configuration/main/Icon/openai-2.svg',
-    'icon-color': '#00B06C'
+    icon: 'play.tv.fill',
+    'icon-color': '#FF2D55',
   });
 });
 
