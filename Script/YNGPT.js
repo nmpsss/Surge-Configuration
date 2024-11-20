@@ -1,22 +1,3 @@
-let titlediy, icon, iconerr, iconColor, iconerrColor;
-if (typeof $argument !== 'undefined') {
-  const args = $argument.split('&');
-  for (let i = 0; i < args.length; i++) {
-    const [key, value] = args[i].split('=');
-    if (key === 'title') {
-      titlediy = value;
-    } else if (key === 'icon') {
-      icon = value;
-    } else if (key === 'iconerr') {
-      iconerr = value;
-    } else if (key === 'icon-color') {
-      iconColor = value;
-    } else if (key === 'iconerr-color') {
-      iconerrColor = value;
-    }
-  }
-}
-
 // 定义检测用的URL和Headers
 const API_CHECK = {
   cookie: {
@@ -98,28 +79,15 @@ Promise.all([
     appStatus = '✅';
   }
 
-  // 设置图标状态（如果两个都可用则使用正常图标，否则使用错误图标）
-  let iconUsed = (webStatus === '✅' || appStatus === '✅') ? 
-    (icon || undefined) : 
-    (iconerr || undefined);
-  
-  let iconCol = (webStatus === '✅' || appStatus === '✅') ? 
-    (iconColor || undefined) : 
-    (iconerrColor || undefined);
-
   // 发送通知
   $done({
-    title: titlediy ? titlediy : 'ChatGPT',
-    content: `Web: ${webStatus}  App: ${appStatus}  区域: ${loc}`,
-    icon: iconUsed,
-    'icon-color': iconCol
+    title: 'ChatGPT',
+    content: `Web: ${webStatus}  App: ${appStatus}  区域: ${loc}`
   });
 }).catch(error => {
   $done({
-    title: titlediy ? titlediy : 'ChatGPT',
-    content: 'ChatGPT: ❌ 检测失败',
-    icon: iconerr,
-    'icon-color': iconerrColor
+    title: 'ChatGPT',
+    content: 'ChatGPT: ❌ 检测失败'
   });
 });
 
