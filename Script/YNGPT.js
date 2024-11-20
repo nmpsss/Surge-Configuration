@@ -79,15 +79,21 @@ Promise.all([
     appStatus = '✅OK';
   }
 
-  // 发送通知
-  $done({
+  // 设置面板信息和图标
+  let panel = {
     title: 'ChatGPT',
-    content: `Web: ${webStatus}  App: ${appStatus}  区域: ${loc}`
-  });
+    content: `Web: ${webStatus}  App: ${appStatus}  区域: ${loc}`,
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/OpenAI.png',  // OpenAI图标
+    'icon-color': '#00B06C'  // OpenAI的品牌绿色
+  };
+
+  $done(panel);
 }).catch(error => {
   $done({
     title: 'ChatGPT',
-    content: 'ChatGPT: ❌ 检测失败'
+    content: 'ChatGPT: ❌ 检测失败',
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/OpenAI.png',
+    'icon-color': '#00B06C'
   });
 });
 
