@@ -11,6 +11,6 @@
 [Panel]
 
 # GPT
-CFGPT = script-name=CFGPT,update-interval=-1
+CFGPT = script-name=CFGPT,update-interval=5
 [Script]
 CFGPT = type=generic,timeout=6,script-path=https://github.com/nmpsss/Surge-Configuration/main/Script/YNGPT.js,argument=icon=lasso.and.sparkles&iconerr=xmark.seal.fill&icon-color=#336FA9&iconerr-color=#D65C51
