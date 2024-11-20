@@ -2,7 +2,7 @@
 #!desc=ChatGPT解锁检测
 
 [Panel]
-ChatGPT = script-name=ChatGPT,update-interval=-1,icon=openai,icon-color=#00B06C
+ChatGPT = script-name=ChatGPT,update-interval=-1,icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/OpenAI.png,icon-color=#00B06C
 
 [Script]
 ChatGPT = type=generic,timeout=6,script-path=https://raw.githubusercontent.com/nmpsss/Surge-Configuration/main/Script/YNGPT.js,timeout=30
