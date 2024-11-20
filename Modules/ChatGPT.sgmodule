@@ -5,4 +5,4 @@
 ChatGPT = script-name=ChatGPT,update-interval=-1,icon=openai,icon-color=#00B06C
 
 [Script]
-ChatGPT = type=generic,timeout=6,script-path=https://raw.githubusercontent.com/nmpsss/Surge-Configuration/main/Script/YNGPT.js
+ChatGPT = type=generic,timeout=6,script-path=https://raw.githubusercontent.com/nmpsss/Surge-Configuration/main/Script/YNGPT.js,timeout=30
