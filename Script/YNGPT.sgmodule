@@ -1,8 +1,8 @@
-#!name=ChatGPT可用性检测
-#!desc=检测当前网络的ChatGPT解锁情况
+#!name=ChatGPT解锁检测
+#!desc=检测ChatGPT的可用性状态
 
 [Panel]
-GPT解锁检测 = script-name=ChatGPT可用性检测, title="ChatGPT解锁检测", content="请刷新面板", update-interval=1
+ChatGPT解锁检测 = script-name=ChatGPT解锁检测, update-interval=43200
 
 [Script]
-ChatGPT可用性检测 = type=generic,timeout=15,script-path=https://raw.githubusercontent.com/nmpsss/Surge-Configuration/refs/heads/main/Script/YNGPT.js
+ChatGPT解锁检测 = type=generic,timeout=15,script-path=https://raw.githubusercontent.com/nmpsss/Surge-Configuration/refs/heads/main/Script/YNGPT.js
