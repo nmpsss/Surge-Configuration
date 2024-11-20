@@ -52,34 +52,30 @@ async function checkChatGPT() {
     const hasUnsupportedCountry = platformResponse.data.includes('unsupported_country');
     const hasVPNMessage = iosResponse.data.includes('VPN');
 
-    let statusEmoji, statusText;
+    let status;
     
     if (!hasVPNMessage && !hasUnsupportedCountry) {
-      statusEmoji = '✓';
-      statusText = '完全支持';
+      status = '✓ 完全支持';
     } else if (!hasUnsupportedCountry && hasVPNMessage) {
-      statusEmoji = '❖';
-      statusText = '网页可用';
+      status = '❖ 仅WebUI';
     } else if (hasUnsupportedCountry && !hasVPNMessage) {
-      statusEmoji = '⚡';
-      statusText = 'API可用';
+      status = '⚡ 仅API';
     } else {
-      statusEmoji = '×';
-      statusText = '不可用';
+      status = '× 不可用';
     }
 
-    updatePanel(statusEmoji, statusText, countryCode);
+    updatePanel(status, countryCode);
   } catch (error) {
     console.error(error);
-    updatePanel('!', '检测失败', 'XX');
+    updatePanel('! 检测失败', 'XX');
   }
 }
 
 // 更新面板显示
-function updatePanel(statusEmoji, statusText, countryCode) {
+function updatePanel(status, countryCode) {
   let body = {
     title: 'ChatGPT',
-    content: `${statusEmoji} ${statusText}   ${getCountryFlagEmoji(countryCode)}${countryCode}`
+    content: `${status} ${getCountryFlagEmoji(countryCode)}${countryCode}`
   };
 
   $done(body);
