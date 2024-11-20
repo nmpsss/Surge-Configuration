@@ -1,6 +1,5 @@
 #!name=ChatGPT Panel
 #!desc=Chatgpt可用区域检测随可用性更换ICON
-#!author=keywos wuhu_zz 整点猫咪
 # 参数说明
 # 可选参数"iconerr=xxx" 不支持chatgpt时的图标，内容为任意有效的 SF Symbol Name
 # 可选参数"icon=xxx" 支持chatgpt时的图标，内容为任意有效的 SF Symbol Name，如 bolt.horizontal.circle.fill，详细可以下载app https://apps.apple.com/cn/app/sf-symbols-browser/id1491161336
