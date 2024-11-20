@@ -82,7 +82,7 @@ Promise.all([
   // 设置面板信息和图标
   let panel = {
     title: 'ChatGPT',
-    content: `Web: ${webStatus}\nApp: ${appStatus}\n区域: ${loc}`,
+    content: `WEB:  ${webStatus}\nAPP:  ${appStatus}\n区域:  ${loc}`,
     icon: 'play.tv.fill',
     'icon-color': '#FF2D55',
   };
