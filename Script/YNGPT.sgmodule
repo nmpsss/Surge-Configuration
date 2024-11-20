@@ -2,6 +2,7 @@
 #!desc=检测ChatGPT的可用性状态
 
 [Panel]
+# GPT
 ChatGPT解锁检测 = script-name=ChatGPT解锁检测, title="ChatGPT 解锁检测", content="请刷新面板", update-interval=43200, style=info
 
 [Script]
