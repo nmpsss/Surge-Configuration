@@ -68,23 +68,23 @@ Promise.all([
   }
 
   // 检查Web端状态
-  let webStatus = '❌不OK';
+  let webStatus = '   ❌   不OK';
   if (!cookieCheck.error && !cookieCheck.data.includes('unsupported_country')) {
-    webStatus = '✅OK';
+    webStatus = '   ✅   很OK';
   }
 
   // 检查App端状态
-  let appStatus = '❌不OK';
+  let appStatus = '   ❌   不OK';
   if (!iosCheck.error && !iosCheck.data.includes('VPN')) {
-    appStatus = '✅OK';
+    appStatus = '   ✅   很OK';
   }
 
   // 设置面板信息和图标
   let panel = {
     title: 'ChatGPT',
-    content: `Web: ${webStatus}  App: ${appStatus}  区域: ${loc}`,
-    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/OpenAI.png',  // OpenAI图标
-    'icon-color': '#00B06C'  // OpenAI的品牌绿色
+    content: `Web: ${webStatus}\nApp: ${appStatus}\n区域: ${loc}`,
+    icon: 'openai',    // OpenAI图标
+    'icon-color': '#FFFFFF'   // 白色图标
   };
 
   $done(panel);
