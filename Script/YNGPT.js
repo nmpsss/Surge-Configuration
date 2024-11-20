@@ -86,50 +86,38 @@ Promise.all([
     loc = getCountryFlagEmoji(cf.loc) + cf.loc;
   }
 
-  // 检查解锁状态
-  let status = 'unknown';
-  let gpt = 'GPT: ';
-  
-  const hasCookieError = cookieCheck.data && cookieCheck.data.includes('unsupported_country');
-  const hasIosError = iosCheck.data && iosCheck.data.includes('VPN');
-  
-  if (!hasCookieError && !hasIosError && !cookieCheck.error && !iosCheck.error) {
-    status = 'yes';
-    gpt += '✔️';
-  } else if (hasCookieError && hasIosError) {
-    status = 'no';
-    gpt += '✖️';
-  } else if (!hasCookieError && hasIosError) {
-    status = 'web';
-    gpt += '🌐';
-  } else if (hasCookieError && !hasIosError) {
-    status = 'app';
-    gpt += '📱';
-  } else {
-    status = 'bad';
-    gpt += '❓';
+  // 检查Web端状态
+  let webStatus = '❌';
+  if (!cookieCheck.error && !cookieCheck.data.includes('unsupported_country')) {
+    webStatus = '✅';
   }
 
-  // 设置图标
-  let iconUsed = status === 'yes' || status === 'web' || status === 'app' ? 
+  // 检查App端状态
+  let appStatus = '❌';
+  if (!iosCheck.error && !iosCheck.data.includes('VPN')) {
+    appStatus = '✅';
+  }
+
+  // 设置图标状态（如果两个都可用则使用正常图标，否则使用错误图标）
+  let iconUsed = (webStatus === '✅' || appStatus === '✅') ? 
     (icon || undefined) : 
     (iconerr || undefined);
   
-  let iconCol = status === 'yes' || status === 'web' || status === 'app' ? 
+  let iconCol = (webStatus === '✅' || appStatus === '✅') ? 
     (iconColor || undefined) : 
     (iconerrColor || undefined);
 
   // 发送通知
   $done({
     title: titlediy ? titlediy : 'ChatGPT',
-    content: `${gpt}   区域: ${loc}`,
+    content: `Web: ${webStatus}  App: ${appStatus}  区域: ${loc}`,
     icon: iconUsed,
     'icon-color': iconCol
   });
 }).catch(error => {
   $done({
     title: titlediy ? titlediy : 'ChatGPT',
-    content: 'GPT: ❌ 检测失败',
+    content: 'ChatGPT: ❌ 检测失败',
     icon: iconerr,
     'icon-color': iconerrColor
   });
