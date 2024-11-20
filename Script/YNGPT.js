@@ -1,5 +1,6 @@
 /*
 Enhanced ChatGPT Availability Check for Surge Panel
+支持面板刷新功能
 */
 
 // 辅助函数：安全的 HTTP 请求
@@ -21,6 +22,14 @@ function safeRequest(url, headers = {}) {
 
 // 主检测函数
 async function checkChatGPT() {
+  // 开始检测时显示加载状态
+  $done({
+    title: 'ChatGPT',
+    content: '检测中...',
+    icon: 'arrow.clockwise', // 添加加载图标
+    'icon-color': '#3478F6' // 蓝色图标
+  });
+
   try {
     // 1. 获取地区信息
     let countryCode = 'XX';
@@ -57,21 +66,31 @@ async function checkChatGPT() {
     }
 
     // 状态判断
-    let status;
+    let status, icon, iconColor;
     if (!platformAvailable && !webUIAvailable) {
       status = '无法访问';
+      icon = 'xmark.circle';
+      iconColor = '#D65C51';
     } else if (platformAvailable && webUIAvailable) {
       status = '完全支持';
+      icon = 'checkmark.circle';
+      iconColor = '#43CD80';
     } else if (platformAvailable) {
       status = '仅API';
+      icon = 'bolt.circle';
+      iconColor = '#F9A825';
     } else {
       status = '仅WebUI';
+      icon = 'globe.americas.fill';
+      iconColor = '#3478F6';
     }
 
     // 更新面板
     $done({
       title: 'ChatGPT',
-      content: `${status} ${getCountryFlagEmoji(countryCode)}${countryCode}`
+      content: `${status} ${getCountryFlagEmoji(countryCode)}${countryCode}`,
+      icon: icon,
+      'icon-color': iconColor
     });
 
   } catch (error) {
@@ -79,7 +98,9 @@ async function checkChatGPT() {
     console.log('Final error:', error);
     $done({
       title: 'ChatGPT',
-      content: `检测失败 ${getCountryFlagEmoji('XX')}XX`
+      content: `检测失败 ${getCountryFlagEmoji('XX')}XX`,
+      icon: 'exclamationmark.triangle',
+      'icon-color': '#D65C51'
     });
   }
 }
@@ -97,4 +118,7 @@ function getCountryFlagEmoji(countryCode) {
 }
 
 // 启动检测
-checkChatGPT();
+$httpAPI.get = $httpClient.get;
+if (typeof $argument === 'undefined') {
+  checkChatGPT();
+}
