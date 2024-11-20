@@ -1,4 +1,15 @@
-const params = $argument ? Object.fromEntries($argument.split('&').map(item => item.split('='))) : {};
+console.log('Received argument:', $argument);
+
+// 确保 $argument 是有效字符串并使用 reduce 模拟 Object.fromEntries
+const params = ($argument && typeof $argument === 'string') 
+  ? $argument.split('&').reduce((acc, item) => {
+      const [key, value] = item.split('=');
+      acc[key] = value;
+      return acc;
+  }, {})
+  : {};
+
+console.log('Params:', JSON.stringify(params));
 
 console.log('Starting script with params:', JSON.stringify(params));
 
