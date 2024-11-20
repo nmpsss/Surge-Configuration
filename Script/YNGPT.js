@@ -1,61 +1,63 @@
-const web_url = "https://chat.openai.com/";
-const api_url = "https://ios.chat.openai.com/";
+let url = "https://api.openai.com/compliance/cookie_requirements";
+let url2 = "https://ios.chat.openai.com";
 
-let result = {
-    title: "ChatGPT 解锁检测",
-    content: "检测中...",
-    icon: "ellipsis.circle",
-    "icon-color": "#9A7FF7"
-};
-
-(async () => {
-    try {
-        let webCheck = await checkWeb();
-        let apiCheck = await checkApi();
-        
-        let content = [];
-        content.push(`网页版: ${webCheck ? "✅" : "❌"}`);
-        content.push(`APP版: ${apiCheck ? "✅" : "❌"}`);
-        
-        result.content = content.join("\n");
-        result.icon = (webCheck || apiCheck) ? "checkmark.circle" : "xmark.circle";
-        result["icon-color"] = (webCheck || apiCheck) ? "#1B9F3E" : "#CB1B45";
-        
-    } catch (err) {
-        result.content = "检测失败，请重试";
-        result.icon = "xmark.circle";
-        result["icon-color"] = "#CB1B45";
+// 发送 HTTP 请求并在 Promise 中处理
+Promise.all([
+  $httpClient.get(url),
+  $httpClient.get(url2)
+]).then(([res1, res2]) => {
+  let result1 = res1.data.includes("unsupported_country");
+  let result2 = res2.data.includes("VPN");
+  let countryCode = "Unknown";
+  
+  // 获取国家代码
+  $httpClient.get("https://chat.openai.com/cdn-cgi/trace", (error, response, data) => {
+    if (!error) {
+      countryCode = data.match(/loc=([A-Z]+)/)?.[1] || "Unknown";
     }
-    $done(result);
-})();
-
-async function checkWeb() {
-    try {
-        let resp = await fetch(web_url);
-        return resp.status === 200;
-    } catch (err) {
-        return false;
+    
+    let gpt, iconUsed, iconCol;
+    
+    if(!result2 && !result1) {
+      // 完全可用
+      gpt = "ChatGPT: ✓";
+      iconUsed = icon ? icon : undefined;
+      iconCol = iconColor ? iconColor : undefined;
+    } else if(!result1 && result2) {
+      // 仅 Web 可用  
+      gpt = "ChatGPT: Web Only";
+      iconUsed = icon ? icon : undefined;
+      iconCol = iconColor ? iconColor : undefined;
+    } else if(result1 && !result2) {
+      // 仅 APP 可用
+      gpt = "ChatGPT: APP Only";
+      iconUsed = icon ? icon : undefined; 
+      iconCol = iconColor ? iconColor : undefined;
+    } else {
+      // 完全不可用
+      gpt = "ChatGPT: ✗";
+      iconUsed = iconerr ? iconerr : undefined;
+      iconCol = iconerrColor ? iconerrColor : undefined;
     }
-}
 
-async function checkApi() {
-    try {
-        let resp = await fetch(api_url);
-        let data = await resp.json();
-        return data.cf_details === "Request is not allowed. Please try again later." && data.type === "dc";
-    } catch (err) {
-        return false;
-    }
-}
+    // 组装通知数据
+    let body = {
+      title: titlediy ? titlediy : 'ChatGPT',
+      content: `${gpt}   区域: ${countryCode}`,
+      icon: iconUsed ? iconUsed : undefined,
+      'icon-color': iconCol ? iconCol : undefined
+    };
 
-function fetch(url) {
-    return new Promise((resolve, reject) => {
-        $httpClient.get(url, (err, resp, data) => {
-            if (err) reject(err);
-            else resolve({
-                status: resp.status,
-                json() { return JSON.parse(data) }
-            });
-        });
-    });
-}
+    $done(body);
+  });
+}).catch((error) => {
+  // 处理错误
+  let body = {
+    title: titlediy ? titlediy : 'ChatGPT', 
+    content: "ChatGPT: 检测失败",
+    icon: iconerr ? iconerr : undefined,
+    'icon-color': iconerrColor ? iconerrColor : undefined
+  };
+  
+  $done(body);
+});
