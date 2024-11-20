@@ -68,15 +68,15 @@ Promise.all([
   }
 
   // 检查Web端状态
-  let webStatus = '❌';
+  let webStatus = '❌不OK';
   if (!cookieCheck.error && !cookieCheck.data.includes('unsupported_country')) {
-    webStatus = '✅';
+    webStatus = '✅OK';
   }
 
   // 检查App端状态
-  let appStatus = '❌';
+  let appStatus = '❌不OK';
   if (!iosCheck.error && !iosCheck.data.includes('VPN')) {
-    appStatus = '✅';
+    appStatus = '✅OK';
   }
 
   // 发送通知
