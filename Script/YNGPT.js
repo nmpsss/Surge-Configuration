@@ -46,28 +46,27 @@ async function test_chatgpt() {
         });
         warp = cloudflareResp.body?.includes('warp=on') ? "✓" : "✗";
 
-        // 格式化显示内容,使用换行符分隔
-        const content = `ChatGPT 可用性检测
-网页版: ${web}
-API: ${api}  
-移动端: ${app}
-地区: ${region}
-Warp: ${warp}`;
+        const lines = [
+            "ChatGPT 解锁检测",
+            `网页版：${web}`,
+            `API：${api}`,
+            `移动端：${app}`,
+            `地区：${region}`,
+            `Warp：${warp}`
+        ];
 
-        // 根据解锁状态设置面板样式
         panel = {
-            title: 'ChatGPT 解锁检测',
-            content,
+            title: "ChatGPT 解锁检测",
+            content: lines.join("\n"),
             icon: web === "✓" ? 'checkmark.circle' : 'xmark.circle',
-            'icon-color': web === "✓" ? '#1B813E' : '#CB1B45', // 成功绿色,失败红色
-            backgroundColor: '#1A1B1E' // 深色背景
+            'icon-color': web === "✓" ? '#1B813E' : '#CB1B45',
+            backgroundColor: '#1A1B1E'
         };
 
     } catch (err) {
-        // 错误处理
         panel = {
-            title: 'ChatGPT 解锁检测',
-            content: '检测异常，请刷新重试\n可能是网络问题',
+            title: "ChatGPT 解锁检测",
+            content: "检测异常\n请刷新重试",
             icon: 'xmark.circle',
             'icon-color': '#CB1B45'
         };
@@ -76,7 +75,6 @@ Warp: ${warp}`;
     $done(panel);
 }
 
-// HTTP 请求封装
 function http(opt) {
     return new Promise((resolve, reject) => {
         $httpClient.get(opt, (err, resp, body) => {
