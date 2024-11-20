@@ -68,15 +68,15 @@ Promise.all([
   }
 
   // 检查Web端状态
-  let webStatus = '   ❌   不OK';
+  let webStatus = '❌';
   if (!cookieCheck.error && !cookieCheck.data.includes('unsupported_country')) {
-    webStatus = '   ✅   很OK';
+    webStatus = '✅';
   }
 
   // 检查App端状态
-  let appStatus = '   ❌   不OK';
+  let appStatus = '❌';
   if (!iosCheck.error && !iosCheck.data.includes('VPN')) {
-    appStatus = '   ✅   很OK';
+    appStatus = '✅';
   }
 
   // 设置面板信息和图标
