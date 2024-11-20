@@ -1,6 +1,5 @@
 /*
 Enhanced ChatGPT Availability Check for Surge Panel
-支持面板刷新功能
 */
 
 // 辅助函数：安全的 HTTP 请求
