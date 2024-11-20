@@ -1,75 +1,61 @@
-const $ = new Env('ChatGPT解锁检测');
-const TIMEOUT = 3000;
+const web_url = "https://chat.openai.com/";
+const api_url = "https://ios.chat.openai.com/";
+
+let result = {
+    title: "ChatGPT 解锁检测",
+    content: "检测中...",
+    icon: "ellipsis.circle",
+    "icon-color": "#9A7FF7"
+};
 
 (async () => {
-  let panel_result = {
-    title: 'ChatGPT解锁检测',
-    content: '',
-    icon: 'checkmark.circle'
-  }
+    try {
+        let webCheck = await checkWeb();
+        let apiCheck = await checkApi();
+        
+        let content = [];
+        content.push(`网页版: ${webCheck ? "✅" : "❌"}`);
+        content.push(`APP版: ${apiCheck ? "✅" : "❌"}`);
+        
+        result.content = content.join("\n");
+        result.icon = (webCheck || apiCheck) ? "checkmark.circle" : "xmark.circle";
+        result["icon-color"] = (webCheck || apiCheck) ? "#1B9F3E" : "#CB1B45";
+        
+    } catch (err) {
+        result.content = "检测失败，请重试";
+        result.icon = "xmark.circle";
+        result["icon-color"] = "#CB1B45";
+    }
+    $done(result);
+})();
 
-  let result = []
-  
-  try {
-    // 检测网页端
-    let web = await new Promise((resolve) => {
-      $httpClient.get({
-        url: 'https://chat.openai.com',
-        timeout: TIMEOUT
-      }, function (error, response, data) {
-        if (error || response.status !== 200) {
-          resolve('未解锁')
-        } else {
-          resolve('已解锁')
-        }
-      })
-    })
-    result.push(`Web: ${web}`)
+async function checkWeb() {
+    try {
+        let resp = await fetch(web_url);
+        return resp.status === 200;
+    } catch (err) {
+        return false;
+    }
+}
 
-    // 检测移动端
-    let app = await new Promise((resolve) => {
-      $httpClient.get({
-        url: 'https://ios.chat.openai.com/',
-        timeout: TIMEOUT
-      }, function (error, response, data) {
-        if (error) {
-          resolve('检测失败')
-          return
-        }
-        try {
-          if (response.status === 403 && JSON.parse(data).cf_details === "Request is not allowed. Please try again later.") {
-            resolve('已解锁')
-          } else {
-            resolve('未解锁')
-          }
-        } catch (e) {
-          resolve('未解锁')
-        }
-      })
-    })
-    result.push(`APP: ${app}`)
+async function checkApi() {
+    try {
+        let resp = await fetch(api_url);
+        let data = await resp.json();
+        return data.cf_details === "Request is not allowed. Please try again later." && data.type === "dc";
+    } catch (err) {
+        return false;
+    }
+}
 
-    // 获取地区
-    let region = await new Promise((resolve) => {
-      $httpClient.get({
-        url: 'https://chat.openai.com/cdn-cgi/trace',
-        timeout: TIMEOUT
-      }, function (error, response, data) {
-        if (error) {
-          resolve('检测失败')
-          return
-        }
-        let region = data?.match(/loc=([A-Z]+)/)?.[1] || '--'
-        resolve(`地区: ${region}`)
-      })
-    })
-    result.push(region)
-    
-    panel_result.content = result.join('\n')
-    
-  } catch (err) {
-    panel_result.content = '检测异常，请刷新重试'
-  }
-  
-  $done(panel_result)
-})()
+function fetch(url) {
+    return new Promise((resolve, reject) => {
+        $httpClient.get(url, (err, resp, data) => {
+            if (err) reject(err);
+            else resolve({
+                status: resp.status,
+                json() { return JSON.parse(data) }
+            });
+        });
+    });
+}
