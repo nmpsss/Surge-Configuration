@@ -82,8 +82,8 @@ Promise.all([
   // 设置面板信息和图标
   let panel = {
     title: 'ChatGPT',
-    content: `WEB:  ${webStatus}\nAPP:  ${appStatus}\n区域:  ${loc}`,
-    icon: 'play.tv.fill',
+    content: `WEB:  ${webStatus}\n APP:  ${appStatus}\n区域:  ${loc}`,
+    icon: 'desktopcomputer',
     'icon-color': '#FF2D55',
   };
 
@@ -92,7 +92,7 @@ Promise.all([
   $done({
     title: 'ChatGPT',
     content: 'ChatGPT: ❌ 检测失败',
-    icon: 'play.tv.fill',
+    icon: 'desktopcomputer',
     'icon-color': '#FF2D55',
   });
 });
