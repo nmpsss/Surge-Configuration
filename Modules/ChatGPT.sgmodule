@@ -2,8 +2,8 @@
 #!desc=检测 ChatGPT 解锁状态
 
 [Panel]
-ChatGPT = script-name=ChatGPT,update-interval=43200
+ChatGPT = script-name=ChatGPT,update-interval=10
 
 [Script]
-ChatGPT = type=generic,timeout=6,script-path=https://raw.githubusercontent.com/nmpsss/Surge-Configuration/refs/heads/main/Script/YNGPT.js,argument=icon=lasso.and.sparkles&iconerr=xmark.seal.fill&icon-color=#336FA9&iconerr-color=#D65C51
+ChatGPT = type=generic,timeout=6,script-path=https://raw.githubusercontent.com/nmpsss/Surge-Configuration/main/Script/YNGPT.js
 
